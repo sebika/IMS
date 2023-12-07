@@ -1,18 +1,44 @@
 <script setup>
+  import { ref } from 'vue'
   import Item from './ProductItem.vue'
 
-  const products = [
-    'Nvidia GeForce RTX 3070',
-    'Nvidia GeForce RTX 3080',
-    'Nvidia GeForce RTX 3090',
-    'AMD Radeon RX 6800',
-    'AMD Radeon RX 6800 XT',
-    'AMD Radeon RX 6900 XT',
-    'AMD Radeon RX 6700 XT'
-  ]
+  // async function getData() {
+  //   const products = []
 
-  const extra_row = ((products.length % 3) ? 1 : 0);
-  const row_indeces = Array.from(Array(Math.floor(products.length/3+extra_row)).keys())
+  //   const response = await fetch('http://localhost:8000/computer_store', {
+  //     method: 'GET',
+  //   })
+
+  //   const data = await response.json()
+  //   console.log(Array.isArray(data.response))
+  //   console.log(data.response.length)
+
+  //   for (let i = 0; i < data.response.length; i++) {
+  //     const comp = data.response[i]
+  //     products.value.push(comp.name)
+  //     console.log(products)
+  //   }
+
+  //   return products
+  // }
+
+  const products = ref(null)
+  const row_indeces = ref(null)
+  const extra_row = ref(null)
+
+  fetch('http://localhost:8000/computer_store', {
+    method: 'GET',
+  }).then(response => response.json())
+    .then(data => data.response.map(comp => comp.name))
+    .then(data => products.value = data)
+    .then(() => {
+      extra_row.value = ((products.value.length % 3) ? 1 : 0);
+      row_indeces.value = Array.from(Array(Math.floor(products.value.length/3+extra_row.value)).keys())
+    })
+
+
+  // const extra_row = ((products.value.length % 3) ? 1 : 0);
+  // const row_indeces = Array.from(Array(Math.floor(products.value.length/3+extra_row)).keys())
 </script>
 
 <template>
