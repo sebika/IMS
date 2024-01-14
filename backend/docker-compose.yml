@@ -7,8 +7,18 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=computer_parts_db
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
     container_name: postgres_db
+  pgadmin:
+    image: dpage/pgadmin4:8.1
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin
+    container_name: pgadmin4_container
