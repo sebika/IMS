@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { router, getAPI } from '@/helpers'
-import VueJwtDecode from 'vue-jwt-decode';
+import VueJwtDecode from 'vue-jwt-decode'
 
 
 export const useAuthStore = defineStore({
