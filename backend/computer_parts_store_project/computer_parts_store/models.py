@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, email, password, first_name, last_name, **extra_fields):
+    def create_user(self, email, password, first_name='admin', last_name='admin', **extra_fields):
         if not email:
             raise ValueError('Users must have an email')
         if not first_name:
@@ -36,6 +36,7 @@ class CustomUser(AbstractBaseUser):
     last_name = models.CharField(max_length=255, blank=False, null=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = 'email'

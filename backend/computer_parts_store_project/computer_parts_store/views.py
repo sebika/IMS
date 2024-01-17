@@ -3,6 +3,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
 from .models import Component, Cpu, Gpu
 from .serializers import UserSerializer
 
@@ -31,7 +34,10 @@ class AllCategoriesView(APIView):
 
         return Response(categories, status=status.HTTP_200_OK)
 
+
 class AllProductsView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         data = Component.objects.all()
         products = [{
@@ -85,6 +91,8 @@ class ProductView(APIView):
 
 
 class AddProductView(APIView):
+    permission_classes = [IsAdminUser]
+
     def post(self, request):
         category, data = request.data['category'], request.data['data']
 
@@ -99,5 +107,7 @@ class AddProductView(APIView):
                       clock_speed=data['clockSpeed'])
         if component:
             component.save()
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_201_CREATED)
