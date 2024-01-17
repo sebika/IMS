@@ -5,6 +5,7 @@
 
   const authStore = useAuthStore();
   const categories = ref([])
+  console.log('fdsfsad')
 
   getAPI.get('/computer_store/categories/')
     .then(response => categories.value = response.data)
@@ -13,7 +14,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-fixed-top bg-body-tertiary">
     <div class="container-fluid">
-      <div class="col-3 d-flex">
+      <div class="col-2 d-flex">
         <router-link :to="{ path: '/'}"><img class="nav-item" src="/favicon.ico" alt="Computer Parts Store" width="40" height="40"></router-link>
         <div class="nav-item dropdown">
           <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Categories</button>
@@ -22,17 +23,20 @@
           </ul>
         </div>
       </div>
-      <div class="col-3">
+      <!-- <div class="col-3">
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-secondary" type="submit">Search</button>
         </form>
-      </div>
+      </div> -->
       <!-- <button class="nav-item nav-link" @click="authAction" v-if="!authStore.user">Login</button> -->
-      <div class="col-3">
+      <div class="col-2">
         <div class="float-end d-flex">
           <router-link :to="{ path: '/product/add'}">
             <button class="btn btn-outline-secondary" type="submit" v-if="authStore.user && authStore.user.is_staff">Add product</button>
+          </router-link>
+          <router-link :to="{ path: '/cart'}">
+            <button class="btn btn-outline-secondary" type="submit" v-if="authStore.user">Cart</button>
           </router-link>
           <div class="nav-item dropdown" v-if="authStore.user">
             <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Profile</button>

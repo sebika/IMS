@@ -1,7 +1,8 @@
 <script setup>
   import { ref } from 'vue'
   import { Form, Field } from 'vee-validate';
-  import { getAPI } from '@/helpers'
+  import FormField from './FormField.vue';
+  import { getAPI, router } from '@/helpers'
 
   const category = ref('')
 
@@ -16,62 +17,56 @@
         price: price,
         architecture: architecture,
         cores: cores,
-        clockSpeed: clockSpeed
+        clockSpeed: clockSpeed,
+      }
+    })
+  }
+
+  async function gpuSubmit(values, { setErrors }) {
+    const { name, brand, series, price, memory_capacity, memory_type, clock_speed } = values
+    await getAPI.post('/computer_store/product/add/', {
+      category: category.value,
+      data: {
+        name: name,
+        brand: brand,
+        series: series,
+        price: price,
+        memory_capacity: memory_capacity,
+        memory_type: memory_type,
+        clock_speed: clock_speed,
       }
     })
   }
 
   async function onSubmit(values, { setErrors }) {
-    if (category.value == 'cpu') {
+    if (category.value == 'cpu')
       await cpuSubmit(values, { setErrors })
-    }
+    else if (category.value == 'gpu')
+      await gpuSubmit(values, { setErrors })
+    router.push('/')
   }
 </script>
 
 <template>
   <div>
     <Form @submit="onSubmit" v-slot="{ errors, isSubmitting }">
-        <div class="form-group">
-          <label>Name</label>
-          <Field name="name" type="text" class="form-control" :class="{ 'is-invalid': errors.name }" />
-          <div class="invalid-feedback">{{errors.name}}</div>
-        </div>
-        <div class="form-group">
-          <label>Brand</label>
-          <Field name="brand" type="text" class="form-control" :class="{ 'is-invalid': errors.brand }" />
-          <div class="invalid-feedback">{{errors.brand}}</div>
-        </div>
-        <div class="form-group">
-          <label>Series</label>
-          <Field name="series" type="text" class="form-control" :class="{ 'is-invalid': errors.series }" />
-          <div class="invalid-feedback">{{errors.series}}</div>
-        </div>
-        <div class="form-group">
-          <label>Price</label>
-          <Field name="price" type="text" class="form-control" :class="{ 'is-invalid': errors.price }" />
-          <div class="invalid-feedback">{{errors.price}}</div>
-        </div>
+        <FormField label="Name" name="name" type="text" :error="errors.name" />
+        <FormField label="Brand" name="brand" type="text" :error="errors.brand" />
+        <FormField label="Series" name="series" type="text" :error="errors.series" />
+        <FormField label="Price" name="price" type="number" :error="errors.price" />
 
         <Field name="category" as="select" v-model="category">
           <option value="cpu">CPU</option>
           <option value="gpu">GPU</option>
         </Field>
+        
+        <FormField label="Architecture" name="architecture" type="text" :error="errors.architecture" v-if="category == 'cpu'"/>
+        <FormField label="Cores" name="cores" type="number" :error="errors.cores" v-if="category == 'cpu'"/>
+        <FormField label="Clock Speed" name="clockSpeed" type="number" :error="errors.clockSpeed" v-if="category == 'cpu'"/>
 
-        <div class="form-group" v-if="category == 'cpu'">
-          <label>Architecture</label>
-          <Field name="architecture" type="text" class="form-control" :class="{ 'is-invalid': errors.architecture }" />
-          <div class="invalid-feedback">{{errors.architecture}}</div>
-        </div>
-        <div class="form-group" v-if="category == 'cpu'">
-          <label>Cores</label>
-          <Field name="cores" type="text" class="form-control" :class="{ 'is-invalid': errors.cores }" />
-          <div class="invalid-feedback">{{errors.cores}}</div>
-        </div>
-        <div class="form-group" v-if="category == 'cpu'">
-          <label>Clock speed</label>
-          <Field name="clockSpeed" type="text" class="form-control" :class="{ 'is-invalid': errors.clockSpeed }" />
-          <div class="invalid-feedback">{{errors.clockSpeed}}</div>
-        </div>
+        <FormField label="Memory Capacity (GB)" name="memory_capacity" type="number" :error="errors.memory_capacity" v-if="category == 'gpu'"/>
+        <FormField label="Memory Type" name="memory_type" type="text" :error="errors.memory_type" v-if="category == 'gpu'"/>
+        <FormField label="Clock Speed" name="clock_speed" type="number" :error="errors.clock_speed" v-if="category == 'gpu'"/>
 
         <div class="form-group">
           <button class="btn btn-primary" :disabled="isSubmitting">

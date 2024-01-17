@@ -1,10 +1,12 @@
 <script setup>
   import { useAuthStore } from '@/stores'
+  import { getAPI } from '@/helpers'
 
   const props = defineProps({
     'id': Number,
     'name': String,
-    'price': Number
+    'price': Number,
+    'deleteProduct': Function,
   })
 
   const authStore = useAuthStore();
@@ -19,7 +21,7 @@
       </router-link>
       <div class="card-footer">
         <div class="col-2 float-start">
-            <button class="btn btn-outline-secondary" v-if="authStore.user && authStore.user.is_staff">Remove</button>
+            <button @click="deleteProduct(props.id)" class="btn btn-outline-secondary" v-if="authStore.user && authStore.user.is_staff">Remove</button>
         </div>
         <div class="col-2 float-end">
             {{ props.price }} lei

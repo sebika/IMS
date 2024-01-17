@@ -40,8 +40,8 @@ class CustomUser(AbstractBaseUser):
     date_joined = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = 'email'
-    # REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+    # REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
@@ -72,3 +72,7 @@ class Gpu(models.Model):
     memory_type = models.CharField(max_length=255, blank=False, null=False)
     clock_speed = models.FloatField(blank=False, null=False)
 
+class CartProduct(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    component = models.ForeignKey(Component, on_delete=models.CASCADE)
+    quantity = models.IntegerField(blank=False, null=False)
