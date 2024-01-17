@@ -33,15 +33,16 @@
       <div class="col-2">
         <div class="float-end d-flex">
           <router-link :to="{ path: '/product/add'}">
-            <button class="btn btn-outline-secondary" type="submit" v-if="authStore.user && authStore.user.is_staff">Add product</button>
+            <button class="btn btn-outline-secondary" type="submit" style="white-space: nowrap;" v-if="authStore.user && authStore.user.is_staff">Add product</button>
           </router-link>
           <router-link :to="{ path: '/cart'}">
-            <button class="btn btn-outline-secondary" type="submit" v-if="authStore.user">Cart</button>
+            <router-link :to="{ path: '/cart/'}"><img class="nav-item" src="/cart.ico" alt="Cart" v-if="authStore.user" width="40" height="40"></router-link>
           </router-link>
           <div class="nav-item dropdown" v-if="authStore.user">
             <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Profile</button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" @click="authStore.logout()">Logout</a></li>
+              <li><a class="dropdown-item" @click=""></a></li>
             </ul>
           </div>
           <button class="nav-item btn btn-outline-secondary" @click="router.push('/login')" v-else>Login</button>
