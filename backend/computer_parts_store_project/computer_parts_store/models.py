@@ -76,3 +76,16 @@ class CartProduct(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     component = models.ForeignKey(Component, on_delete=models.CASCADE)
     quantity = models.IntegerField(blank=False, null=False)
+
+
+class Order(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    shipping_address = models.CharField(max_length=255, blank=False, null=False)
+    phone = models.CharField(max_length=255, blank=False, null=False)
+    date_ordered = models.DateTimeField(default=timezone.now)
+
+
+class OrderProduct(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    component = models.ForeignKey(Component, on_delete=models.CASCADE)
+    quantity = models.IntegerField(blank=False, null=False)

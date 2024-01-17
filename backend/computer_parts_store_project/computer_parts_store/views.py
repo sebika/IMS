@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import CartProduct, Component, Cpu, Gpu
+from .models import CartProduct, Component, Cpu, Gpu, Order, OrderProduct
 from .serializers import UserSerializer
 
 
@@ -143,16 +143,19 @@ class AllCartProductsView(APIView):
         cartProducts = CartProduct.objects.all()
         components = []
         quantities = []
+        cart_products_ids = []
         for cp in cartProducts:
             components.append(Component.objects.get(pk=cp.component_id))
             quantities.append(cp.quantity)
+            cart_products_ids.append(cp.pk)
 
         components = [{
             'id': p.pk,
             'name': p.name,
             'price': p.price,
             'quantity': q,
-        } for p, q in zip(components, quantities)]
+            'cart_product_id': cp_id
+        } for p, q, cp_id in zip(components, quantities, cart_products_ids)]
 
         return Response(components, status=status.HTTP_200_OK)
 
@@ -160,10 +163,66 @@ class AddToCartView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        print(request.data)
         CartProduct(
             user_id=request.user.pk,
             component_id=request.data['product_id'],
             quantity=request.data['quantity']
         ).save()
         return Response(status=status.HTTP_200_OK)
+    
+class DeleteFromCartView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        id_ = kwargs['id_']
+
+        cart_product = CartProduct.objects.get(pk=id_)
+        if not cart_product:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        cart_product.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class CheckoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = CustomUser.objects.get(pk=request.user.pk)
+        order = Order(
+            user=user,
+            shipping_address=request.data['address'],
+            phone=request.data['phone']
+        )
+
+        cartProducts = CartProduct.objects.filter(user=user)
+        if not cartProducts:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        order.save()
+        for cp in cartProducts:
+            OrderProduct(
+                order=order,
+                component=cp.component,
+                quantity=cp.quantity
+            ).save()
+
+            cp.delete()
+
+        return Response(status=status.HTTP_201_CREATED)
+    
+# class AllOrdersView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def get(self, request):
+#         user = CustomUser.objects.get(pk=request.user.pk)
+#         orders = Order.objects.filter(user=user)
+#         orders = [{
+#             'id': o.pk,
+#             'shipping_address': o.shipping_address,
+#             'phone': o.phone,
+#             'date': o.date
+#         } for o in orders]
+
+#         return Response(orders, status=status.HTTP_200_OK)
