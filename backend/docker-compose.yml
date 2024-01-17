@@ -18,7 +18,7 @@ services:
       - "8888:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_DEFAULT_PASSWORD: admin123
     volumes:
       - ./data/pgadmin:/var/lib/pgadmin
     container_name: pgadmin4_container

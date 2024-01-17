@@ -1,0 +1,377 @@
+[
+{
+    "model": "computer_parts_store.component",
+    "pk": 1,
+    "fields": {
+        "name": "Intel Core i5 13600KF 3.5GHz",
+        "brand": "Intel",
+        "series": "Core i5",
+        "price": 1559.99,
+        "category": "cpu"
+    }
+},
+{
+  "model": "computer_parts_store.cpu",
+  "pk": 1,
+  "fields": {
+      "component_fk": 1,
+      "architecture": "Raptor Lake",
+      "cores": 14,
+      "clock_speed": 3.5
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 2,
+  "fields": {
+      "name": "AMD Ryzen 7 7800X3D 4.2GHz",
+      "brand": "AMD",
+      "series": "Ryzen 7",
+      "price": 1969.99,
+      "category": "cpu"
+  }
+},
+{
+  "model": "computer_parts_store.cpu",
+  "pk": 2,
+  "fields": {
+      "component_fk": 2,
+      "architecture": "Raphael",
+      "cores": 8,
+      "clock_speed": 4.2
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 3,
+  "fields": {
+      "name": "Intel Core i7 14700K 3.4GHz",
+      "brand": "Intel",
+      "series": "Core i7",
+      "price": 2309.99,
+      "category": "cpu"
+  }
+},
+{
+  "model": "computer_parts_store.cpu",
+  "pk": 3,
+  "fields": {
+      "component_fk": 3,
+      "architecture": "Raptor Lake Refresh",
+      "cores": 20,
+      "clock_speed": 3.4
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 4,
+  "fields": {
+      "name": "AMD Ryzen 9 7900X 4.3GHz",
+      "brand": "AMD",
+      "series": "Ryzen 9",
+      "price": 3339.99,
+      "category": "cpu"
+  }
+},
+{
+  "model": "computer_parts_store.cpu",
+  "pk": 4,
+  "fields": {
+      "component_fk": 4,
+      "architecture": "Raphael",
+      "cores": 16,
+      "clock_speed": 4.3
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 5,
+  "fields": {
+      "name": "Intel Core i9 15700K 3.6GHz",
+      "brand": "Intel",
+      "series": "Core i9",
+      "price": 3339.99,
+      "category": "cpu"
+  }
+},
+{
+  "model": "computer_parts_store.cpu",
+  "pk": 5,
+  "fields": {
+      "component_fk": 5,
+      "architecture": "Raptor Lake Refresh",
+      "cores": 24,
+      "clock_speed": 3.6
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 6,
+  "fields": {
+      "name": "AMD Ryzen 9 8900X 4.5GHz",
+      "brand": "AMD",
+      "series": "Ryzen 9",
+      "price": 3339.99,
+      "category": "cpu"
+  }
+},
+{
+  "model": "computer_parts_store.cpu",
+  "pk": 6,
+  "fields": {
+      "component_fk": 6,
+      "architecture": "Raphael",
+      "cores": 24,
+      "clock_speed": 4.5
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 7,
+  "fields": {
+      "name": "Intel Core i9 16700K 3.8GHz",
+      "brand": "Intel",
+      "series": "Core i9",
+      "price": 3339.99,
+      "category": "cpu"
+  }
+},
+{
+  "model": "computer_parts_store.cpu",
+  "pk": 7,
+  "fields": {
+      "component_fk": 7,
+      "architecture": "Raptor Lake Refresh",
+      "cores": 28,
+      "clock_speed": 3.8
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 8,
+  "fields": {
+      "name": "AMD Ryzen 9 9900X 4.6GHz",
+      "brand": "AMD",
+      "series": "Ryzen 9",
+      "price": 3339.99,
+      "category": "cpu"
+  }
+},
+{
+  "model": "computer_parts_store.cpu",
+  "pk": 8,
+  "fields": {
+      "component_fk": 8,
+      "architecture": "Raphael",
+      "cores": 32,
+      "clock_speed": 4.6
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 9,
+  "fields": {
+      "name": "Intel Core i9 17700K 4.0GHz",
+      "brand": "Intel",
+      "series": "Core i9",
+      "price": 3339.99,
+      "category": "cpu"
+  }
+},
+{
+  "model": "computer_parts_store.cpu",
+  "pk": 9,
+  "fields": {
+      "component_fk": 9,
+      "architecture": "Raptor Lake Refresh",
+      "cores": 32,
+      "clock_speed": 4.0
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 10,
+  "fields": {
+      "name": "AMD Ryzen 9 10900X 4.7GHz",
+      "brand": "AMD",
+      "series": "Ryzen 9",
+      "price": 3339.99,
+      "category": "cpu"
+  }
+},
+{
+  "model": "computer_parts_store.cpu",
+  "pk": 10,
+  "fields": {
+      "component_fk": 10,
+      "architecture": "Raphael",
+      "cores": 40,
+      "clock_speed": 4.7
+  }
+},
+
+
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 4,
+  "fields": {
+      "name": "NVIDIA GeForce RTX 3060",
+      "brand": "NVIDIA",
+      "series": "GeForce RTX 3060",
+      "price": 1969.99,
+      "category": "gpu"
+  }
+},
+{
+  "model": "computer_parts_store.gpu",
+  "pk": 1,
+  "fields": {
+      "component_fk": 4,
+      "memory_capacity": 12,
+      "memory_type": "GDDR6",
+      "clock_speed": 1.32
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 5,
+  "fields": {
+      "name": "NVIDIA GeForce RTX 4070",
+      "brand": "NVIDIA",
+      "series": "GeForce RTX 4070",
+      "price": 3339.99,
+      "category": "gpu"
+  }
+},
+{
+  "model": "computer_parts_store.gpu",
+  "pk": 2,
+  "fields": {
+      "component_fk": 5,
+      "memory_capacity": 12,
+      "memory_type": "GDDR6X",
+      "clock_speed": 2.48
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 6,
+  "fields": {
+      "name": "NVIDIA GeForce RTX 5080",
+      "brand": "NVIDIA",
+      "series": "GeForce RTX 5080",
+      "price": 3339.99,
+      "category": "gpu"
+  }
+},
+{
+  "model": "computer_parts_store.gpu",
+  "pk": 3,
+  "fields": {
+      "component_fk": 6,
+      "memory_capacity": 24,
+      "memory_type": "GDDR6X",
+      "clock_speed": 2.48
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 7,
+  "fields": {
+      "name": "NVIDIA GeForce RTX 6090",
+      "brand": "NVIDIA",
+      "series": "GeForce RTX 6090",
+      "price": 3339.99,
+      "category": "gpu"
+  }
+},
+{
+  "model": "computer_parts_store.gpu",
+  "pk": 4,
+  "fields": {
+      "component_fk": 7,
+      "memory_capacity": 24,
+      "memory_type": "GDDR6X",
+      "clock_speed": 2.48
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 8,
+  "fields": {
+      "name": "NVIDIA GeForce RTX 70100",
+      "brand": "NVIDIA",
+      "series": "GeForce RTX 70100",
+      "price": 3339.99,
+      "category": "gpu"
+  }
+},
+{
+  "model": "computer_parts_store.gpu",
+  "pk": 5,
+  "fields": {
+      "component_fk": 8,
+      "memory_capacity": 24,
+      "memory_type": "GDDR6X",
+      "clock_speed": 2.48
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 9,
+  "fields": {
+      "name": "NVIDIA GeForce RTX 80120",
+      "brand": "NVIDIA",
+      "series": "GeForce RTX 80120",
+      "price": 3339.99,
+      "category": "gpu"
+  }
+},
+{
+  "model": "computer_parts_store.gpu",
+  "pk": 6,
+  "fields": {
+      "component_fk": 9,
+      "memory_capacity": 24,
+      "memory_type": "GDDR6X",
+      "clock_speed": 2.48
+  }
+},
+
+{
+  "model": "computer_parts_store.component",
+  "pk": 10,
+  "fields": {
+      "name": "NVIDIA GeForce RTX 90140",
+      "brand": "NVIDIA",
+      "series": "GeForce RTX 90140",
+      "price": 3339.99,
+      "category": "gpu"
+  }
+},
+{
+  "model": "computer_parts_store.gpu",
+  "pk": 7,
+  "fields": {
+      "component_fk": 10,
+      "memory_capacity": 24,
+      "memory_type": "GDDR6X",
+      "clock_speed": 2.48
+  }
+}
+]

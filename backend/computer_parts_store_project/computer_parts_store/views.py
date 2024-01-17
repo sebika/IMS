@@ -36,8 +36,6 @@ class AllCategoriesView(APIView):
 
 
 class AllProductsView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
         data = Component.objects.all()
         products = [{
@@ -96,18 +94,22 @@ class AddProductView(APIView):
     def post(self, request):
         category, data = request.data['category'], request.data['data']
 
-        component = None
+        component = Component(
+            name=data['name'],
+            brand=data['brand'],
+            series=data['series'],
+            price=data['price'])
+        component.save()
         if category == 'cpu':
-            component = Cpu(name=data['name'],
-                      brand=data['brand'],
-                      series=data['series'],
-                      price=data['price'],
-                      architecture=data['architecture'],
-                      cores=data['cores'],
-                      clock_speed=data['clockSpeed'])
-        if component:
-            component.save()
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            cpu = Cpu(
+                component_fk=component,
+                architecture=data['architecture'],
+                cores=data['cores'],
+                clock_speed=data['clockSpeed'])
+            cpu.save()
+        # if component:
+        #     component.save()
+        # else:
+        #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_201_CREATED)
