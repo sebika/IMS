@@ -5,3 +5,4 @@ export { default as ProductView } from './ProductView.vue';
 export { default as AddProductView } from './AddProductView.vue';
 export { default as ProfileView } from './ProfileView.vue';
 export { default as AboutView } from './AboutView.vue';
+export { default as CartView } from './CartView.vue';

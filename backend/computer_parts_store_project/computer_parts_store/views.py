@@ -3,10 +3,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import Component, Cpu, Gpu
+from .models import CartProduct, Component, Cpu, Gpu
 from .serializers import UserSerializer
 
 
@@ -60,7 +59,7 @@ class CategoryProductsView(APIView):
 
         return Response(products, status=status.HTTP_200_OK)
 
-class ProductView(APIView):
+class GetProductView(APIView):
     def get(self, request, *args, **kwargs):
         id_ = kwargs['id_']
 
@@ -88,6 +87,21 @@ class ProductView(APIView):
         return Response(product, status=status.HTTP_200_OK)
 
 
+class DeleteProductView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def delete(self, request, *args, **kwargs):
+        id_ = kwargs['id_']
+
+        component = Component.objects.get(pk=id_)
+        if not component:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        component.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class AddProductView(APIView):
     permission_classes = [IsAdminUser]
 
@@ -98,18 +112,58 @@ class AddProductView(APIView):
             name=data['name'],
             brand=data['brand'],
             series=data['series'],
-            price=data['price'])
+            price=data['price'],
+            category=category,
+        )
         component.save()
+
         if category == 'cpu':
-            cpu = Cpu(
+            Cpu(
                 component_fk=component,
                 architecture=data['architecture'],
                 cores=data['cores'],
-                clock_speed=data['clockSpeed'])
-            cpu.save()
-        # if component:
-        #     component.save()
-        # else:
-        #     return Response(status=status.HTTP_400_BAD_REQUEST)
+                clock_speed=data['clockSpeed']
+            ).save()
+
+        elif category == 'gpu':
+            Gpu(
+                component_fk=component,
+                memory_capacity=data['memory_capacity'],
+                memory_type=data['memory_type'],
+                clock_speed=data['clock_speed']
+            ).save()
 
         return Response(status=status.HTTP_201_CREATED)
+
+
+class AllCartProductsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        cartProducts = CartProduct.objects.all()
+        components = []
+        quantities = []
+        for cp in cartProducts:
+            components.append(Component.objects.get(pk=cp.component_id))
+            quantities.append(cp.quantity)
+
+        components = [{
+            'id': p.pk,
+            'name': p.name,
+            'price': p.price,
+            'quantity': q,
+        } for p, q in zip(components, quantities)]
+
+        return Response(components, status=status.HTTP_200_OK)
+
+class AddToCartView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        print(request.data)
+        CartProduct(
+            user_id=request.user.pk,
+            component_id=request.data['product_id'],
+            quantity=request.data['quantity']
+        ).save()
+        return Response(status=status.HTTP_200_OK)

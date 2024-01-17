@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,6 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-z4r32l)uc$lj97ip+8(2a=fmjl@!^me9+$@e6mi9*9!wx@%#!0'
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+    "SLIDING_TOKEN_LIFETIME": timedelta(hours=24),
+}
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

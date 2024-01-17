@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/stores'
-import { HomeView, RegisterView, LoginView, ProductView, AddProductView, ProfileView, AboutView } from '@/views';
+
+import { useAuthStore } from '@/stores';
+import { HomeView, RegisterView, LoginView, ProductView, AddProductView, ProfileView, AboutView, CartView } from '@/views';
 
 
 export const router = createRouter({
@@ -14,6 +15,7 @@ export const router = createRouter({
         { path: '/product/add/',                        component: AddProductView },
         { path: '/profile/',                            component: ProfileView },
         { path: '/about/',                              component: AboutView },
+        { path: '/cart/',                               component: CartView },
     ]
 });
 
