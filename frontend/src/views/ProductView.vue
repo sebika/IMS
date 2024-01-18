@@ -1,12 +1,20 @@
 <script setup>
   import { ref } from 'vue'
   import { useRoute } from 'vue-router'
-  import { getAPI } from '@/helpers'
+  import { getAPI, router } from '@/helpers'
   import { useAuthStore } from '@/stores'
+  import * as Notify from 'notifyjs'
 
   const product = ref({})
   const authStore = useAuthStore();
   const quantity = ref(1)
+
+  function showNotification() {
+        const notification = new Notify('Added to cart', {
+            body: 'Your item was added successfully!',
+        })
+        notification.show()
+    }
 
   const route = useRoute();
   getAPI.get(`/computer_store/product/id/${route.params.id}`)
@@ -16,10 +24,19 @@
     })
 
     async function addToCart() {
-      await getAPI.post('/computer_store/cart/add/', {
+      const response = await getAPI.post('/computer_store/cart/add/', {
         product_id: route.params.id,
         quantity: quantity.value
       })
+
+      if (response.status == 200) {
+            if (Notify.needsPermission && Notify.isSupported())
+                Notify.requestPermission(showNotification)
+            else
+                showNotification()
+        } else {
+            setErrors({ apiError: response.data.detail })
+        }
     }
 </script>
 

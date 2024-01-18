@@ -169,7 +169,7 @@ class AddToCartView(APIView):
             quantity=request.data['quantity']
         ).save()
         return Response(status=status.HTTP_200_OK)
-    
+
 class DeleteFromCartView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -183,7 +183,7 @@ class DeleteFromCartView(APIView):
         cart_product.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
 
 class CheckoutView(APIView):
     permission_classes = [IsAuthenticated]
@@ -199,7 +199,7 @@ class CheckoutView(APIView):
         cartProducts = CartProduct.objects.filter(user=user)
         if not cartProducts:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        
+
         order.save()
         for cp in cartProducts:
             OrderProduct(
@@ -211,13 +211,16 @@ class CheckoutView(APIView):
             cp.delete()
 
         return Response(status=status.HTTP_201_CREATED)
-    
+
 class AllOrdersView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = CustomUser.objects.get(pk=request.user.pk)
-        orders = Order.objects.filter(user=user)
+        if user.is_staff:
+            orders = Order.objects.all()
+        else:
+            orders = Order.objects.filter(user=user)
         orders = [{
             'id': o.pk,
             'shipping_address': o.shipping_address,
@@ -231,3 +234,18 @@ class AllOrdersView(APIView):
         } for o in orders]
 
         return Response(orders, status=status.HTTP_200_OK)
+
+class DeleteOrderView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def delete(self, request, *args, **kwargs):
+        id_ = kwargs['id_']
+        print(id_)
+        order = Order.objects.get(pk=id_)
+        print(order)
+        if not order:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        order.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)

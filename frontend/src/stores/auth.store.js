@@ -11,7 +11,8 @@ export const useAuthStore = defineStore({
     returnUrl: null
   }),
   getters: {
-    accessToken: (state) => state.user.access
+    accessToken: (state) => state.user.access,
+    refreshToken: (state) => state.user.refresh
   },
   actions: {
     async register(email, password, first_name, last_name) {
@@ -41,6 +42,11 @@ export const useAuthStore = defineStore({
 
       // redirect to previous url or default to home page
       router.push(this.returnUrl || '/');
+    },
+    updateAccessToken(accessToken) {
+      this.user.access = accessToken;
+      console.log(this.user)
+      localStorage.setItem('user', JSON.stringify(this.user));
     },
     logout() {
       this.user = null;

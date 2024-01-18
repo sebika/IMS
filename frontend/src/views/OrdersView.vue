@@ -1,10 +1,20 @@
 <script setup>
     import { ref } from 'vue';
+    import { useAuthStore } from '@/stores'
     import { getAPI } from '@/helpers';
 
+    const authStore = useAuthStore();
+
     const orders = ref([]);
-    getAPI.get('/computer_store/orders/all/')
-        .then(response => orders.value = response.data);
+    getAPI.get('/computer_store/order/all/')
+    .then(response => orders.value = response.data);
+
+    async function deleteOrder(id) {
+      const response = await getAPI.delete(`/computer_store/order/delete/${parseInt(id)}/`)
+      if (response.status == 204) {
+        orders.value = orders.value.filter(p => p.id != id)
+      }
+    }
 </script>
 
 <template>
@@ -32,6 +42,7 @@
                     </tr>
                 </tbody>
             </table>
+            <button @click="deleteOrder(order.id)" class="btn btn-outline-secondary" v-if="authStore.user && authStore.user.is_staff">Remove</button>
             <br>
         </div>
     </div>
