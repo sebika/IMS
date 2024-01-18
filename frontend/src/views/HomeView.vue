@@ -1,19 +1,37 @@
 <script setup>
-  import { ref } from 'vue'
+  import { watch, ref, onMounted } from 'vue'
   import { getAPI } from '@/helpers'
+  import { useRoute } from 'vue-router'
   import Item from './ProductItem.vue'
   import * as Notify from 'notifyjs'
 
+  const category = ref('')
+  const route = useRoute();
   const products = ref([])
   const row_indeces = ref([])
   const extra_row = ref(0)
 
-  getAPI.get('/computer_store/product/all/')
-    .then(response => products.value = response.data)
-    .then(() => {
-      extra_row.value = ((products.value.length % 3) ? 1 : 0);
-      row_indeces.value = Array.from(Array(Math.floor(products.value.length/3+extra_row.value)).keys())
-    })
+  function loadData() {
+    let url = '/computer_store/product/all'
+    if (category.value)
+      url = `/computer_store/product/category/${category.value}`
+      getAPI.get(url)
+        .then(response => products.value = response.data)
+        .then(() => {
+          extra_row.value = ((products.value.length % 3) ? 1 : 0);
+          row_indeces.value = Array.from(Array(Math.floor(products.value.length/3+extra_row.value)).keys())
+        })
+  }
+
+  watch(() => route.params.category, (newVal, oldVal) => {
+    category.value = newVal
+    loadData()
+  })
+
+  onMounted(async () => {
+    category.value = route.params.category
+    loadData()
+  })
 
   function showNotification() {
     const notification = new Notify('Product deleted', {

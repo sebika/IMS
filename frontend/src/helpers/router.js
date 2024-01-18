@@ -9,6 +9,7 @@ export const router = createRouter({
     linkActiveClass: 'active',
     routes: [
         { path: '/',                                    component: HomeView },
+        { path: '/:category?/',     name: 'category',   component: HomeView },
         { path: '/register/',                           component: RegisterView },
         { path: '/login/',                              component: LoginView },
         { path: '/product/:id/',    name: 'product',    component: ProductView },

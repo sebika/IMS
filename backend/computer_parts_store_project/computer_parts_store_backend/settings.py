@@ -24,11 +24,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-z4r32l)uc$lj97ip+8(2a=fmjl@!^me9+$@e6mi9*9!wx@%#!0'
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Set the expiration time to 1 day (adjust as needed)
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Optionally, set the refresh token expiration time
-}
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -47,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'corsheaders',
     'rest_framework',
+    'drf_yasg',
     'computer_parts_store',
 ]
 
@@ -142,10 +138,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
+
 SIMPLE_JWT = {
-  # It will work instead of the default serializer(TokenObtainPairSerializer).
-  "TOKEN_OBTAIN_SERIALIZER": "computer_parts_store.serializers.MyTokenObtainPairSerializer",
-  # ...
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+    "SLIDING_TOKEN_LIFETIME": timedelta(hours=24),
+    # It will work instead of the default serializer(TokenObtainPairSerializer).
+    "TOKEN_OBTAIN_SERIALIZER": "computer_parts_store.serializers.MyTokenObtainPairSerializer",
+    # ...
 }
 
 REST_FRAMEWORK = {
@@ -156,6 +156,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
 AUTH_USER_MODEL = "computer_parts_store.CustomUser"

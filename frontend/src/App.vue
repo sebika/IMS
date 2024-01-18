@@ -5,7 +5,6 @@
 
   const authStore = useAuthStore();
   const categories = ref([])
-  console.log('fdsfsad')
 
   getAPI.get('/computer_store/categories/')
     .then(response => categories.value = response.data)
@@ -15,11 +14,15 @@
   <nav class="navbar navbar-expand-lg navbar-fixed-top bg-body-tertiary">
     <div class="container-fluid">
       <div class="col-2 d-flex">
-        <router-link :to="{ path: '/'}"><img class="nav-item" src="/favicon.ico" alt="Computer Parts Store" width="40" height="40"></router-link>
+        <router-link :to="{ path: '/' }"><img class="nav-item" src="/favicon.ico" alt="Computer Parts Store" width="40" height="40"></router-link>
         <div class="nav-item dropdown">
           <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Categories</button>
           <ul class="dropdown-menu">
-            <li v-for="cat in categories"><a class="dropdown-item" @click="router.push('/')">{{ cat }}</a></li>
+            <li v-for="cat in categories">
+              <router-link :to="{ name: 'category', params: { category: cat.toLowerCase() } }">
+                <div class="dropdown-item">{{ cat }}</div>
+              </router-link>
+            </li>
           </ul>
         </div>
       </div>

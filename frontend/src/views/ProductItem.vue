@@ -1,6 +1,5 @@
 <script setup>
   import { useAuthStore } from '@/stores'
-  import { getAPI } from '@/helpers'
 
   const props = defineProps({
     'id': Number,
