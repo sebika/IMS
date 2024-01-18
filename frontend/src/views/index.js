@@ -7,3 +7,4 @@ export { default as ProfileView } from './ProfileView.vue';
 export { default as AboutView } from './AboutView.vue';
 export { default as CartView } from './CartView.vue';
 export { default as CheckoutView } from './CheckoutView.vue';
+export { default as OrdersView} from './OrdersView.vue';

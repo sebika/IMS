@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import { useAuthStore } from '@/stores';
-import { HomeView, RegisterView, LoginView, ProductView, AddProductView, ProfileView, AboutView, CartView, CheckoutView } from '@/views';
+import { HomeView, RegisterView, LoginView, ProductView, AddProductView, ProfileView, AboutView, CartView, CheckoutView, OrdersView } from '@/views';
 
 
 export const router = createRouter({
@@ -17,7 +17,8 @@ export const router = createRouter({
         { path: '/profile/',                            component: ProfileView },
         { path: '/about/',                              component: AboutView },
         { path: '/cart/',                               component: CartView },
-        { path: '/cart/checkout/',                      component: CheckoutView }
+        { path: '/cart/checkout/',                      component: CheckoutView },
+        { path: '/orders/',                             component: OrdersView },
     ]
 });
 

@@ -212,17 +212,22 @@ class CheckoutView(APIView):
 
         return Response(status=status.HTTP_201_CREATED)
     
-# class AllOrdersView(APIView):
-#     permission_classes = [IsAuthenticated]
+class AllOrdersView(APIView):
+    permission_classes = [IsAuthenticated]
 
-#     def get(self, request):
-#         user = CustomUser.objects.get(pk=request.user.pk)
-#         orders = Order.objects.filter(user=user)
-#         orders = [{
-#             'id': o.pk,
-#             'shipping_address': o.shipping_address,
-#             'phone': o.phone,
-#             'date': o.date
-#         } for o in orders]
+    def get(self, request):
+        user = CustomUser.objects.get(pk=request.user.pk)
+        orders = Order.objects.filter(user=user)
+        orders = [{
+            'id': o.pk,
+            'shipping_address': o.shipping_address,
+            'phone': o.phone,
+            'date': o.date_ordered.strftime("%Y-%m-%d %H:%M"),
+            'products': [{
+                'name': op.component.name,
+                'price': op.component.price,
+                'quantity': op.quantity
+            } for op in OrderProduct.objects.filter(order=o)]
+        } for o in orders]
 
-#         return Response(orders, status=status.HTTP_200_OK)
+        return Response(orders, status=status.HTTP_200_OK)

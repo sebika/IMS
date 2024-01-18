@@ -21,5 +21,5 @@ urlpatterns = [
     path('cart/delete/<int:id_>/', views.DeleteFromCartView.as_view(), name='delete_from_cart'),
     # order
     path('cart/checkout/', views.CheckoutView.as_view(), name='checkout'),
-    # path('orders/all/', views.AllOrdersView.as_view(), name='all_orders'),
+    path('orders/all/', views.AllOrdersView.as_view(), name='all_orders'),
 ]

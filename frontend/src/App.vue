@@ -45,7 +45,7 @@
             <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Profile</button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" @click="authStore.logout()">Logout</a></li>
-              <li><a class="dropdown-item" @click=""></a></li>
+              <li><router-link :to="{ path: 'orders' }" class="dropdown-item">Orders</router-link></li>
             </ul>
           </div>
           <button class="nav-item btn btn-outline-secondary" @click="router.push('/login')" v-else>Login</button>
