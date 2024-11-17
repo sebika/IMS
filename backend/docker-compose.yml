@@ -12,13 +12,8 @@ services:
     ports:
       - 5432:5432
     container_name: postgres_db
-  pgadmin:
-    image: dpage/pgadmin4:8.1
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - "8888:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
-    volumes:
-      - ./data/pgadmin:/var/lib/pgadmin
-    container_name: pgadmin4_container
+      - 8080:8080
