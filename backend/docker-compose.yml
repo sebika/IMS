@@ -1,5 +1,20 @@
 version: '3.9'
 services:
+  frontend:
+    image: jokeswar/ims-front:latest
+    depends_on:
+      - backend
+    ports:
+      - 5173:5173
+  backend:
+    image: jokeswar/ims:latest
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+    ports:
+      - 8000:8000
   postgres:
     image: postgres:16.1
     environment:
@@ -11,7 +26,6 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
-    container_name: postgres_db
   adminer:
     image: adminer
     restart: always

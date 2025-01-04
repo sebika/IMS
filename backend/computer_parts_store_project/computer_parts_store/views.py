@@ -30,7 +30,7 @@ class AllCategoriesView(APIView):
         categories = Component.objects.values_list('category', flat=True).distinct()
         categories = [cat.upper() for cat in categories]
 
-        return Response(categories, status=status.HTTP_200_OK)
+        return Response(categories, status=status.HTTP_200_OK, headers={'Access-Control-Allow-Origin': '*'})
 
 
 class AllProductsView(APIView):
