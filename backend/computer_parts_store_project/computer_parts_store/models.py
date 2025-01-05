@@ -56,6 +56,7 @@ class Component(models.Model):
     series = models.CharField(max_length=255, blank=False, null=False)
     price = models.FloatField(blank=False, null=False)
     category = models.CharField(max_length=255, blank=False, null=False)
+    price_id = models.CharField(max_length=255, blank=True, null=False)
     # class Meta:
     #     abstract = True
 

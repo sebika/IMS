@@ -22,5 +22,6 @@ PyYAML==6.0.1
 requests==2.31.0
 simplejson==3.19.2
 sqlparse==0.4.4
+stripe==11.4.1
 uritemplate==4.1.1
 urllib3==2.1.0

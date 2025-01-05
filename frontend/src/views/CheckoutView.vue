@@ -19,12 +19,10 @@
             phone: phone,
         })
 
-        if (response.status == 201) {
-            router.push('/')
-            if (Notify.needsPermission && Notify.isSupported())
-                Notify.requestPermission(showNotification)
-            else
-                showNotification()
+        console.log(response)
+
+        if (response.status == 200) {
+            window.location = response.data.url
         } else {
             setErrors({ apiError: response.data.detail })
         }

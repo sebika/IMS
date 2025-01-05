@@ -1,4 +1,6 @@
+from typing import Any, Dict, List
 from django.contrib.auth import get_user_model
+from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -184,6 +186,13 @@ class DeleteFromCartView(APIView):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+import stripe
+import os
+# This test secret API key is a placeholder. Don't include personal details in requests with this key.
+# To see your test secret API key embedded in code samples, sign in to your Stripe account.
+# You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
+stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
+
 
 class CheckoutView(APIView):
     permission_classes = [IsAuthenticated]
@@ -200,6 +209,7 @@ class CheckoutView(APIView):
         if not cartProducts:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        line_items: List[Any] = []
         order.save()
         for cp in cartProducts:
             OrderProduct(
@@ -208,9 +218,27 @@ class CheckoutView(APIView):
                 quantity=cp.quantity
             ).save()
 
+            line_items.append({
+                'price': cp.component.price_id,
+                'quantity': cp.quantity,
+            })
+
             cp.delete()
 
-        return Response(status=status.HTTP_201_CREATED)
+        YOUR_DOMAIN = 'http://localhost:5173'
+
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                line_items=line_items,
+                mode='payment',
+                success_url=YOUR_DOMAIN + '?success=true',
+                cancel_url=YOUR_DOMAIN + '?canceled=true',
+            )
+        except Exception as e:
+            print(str(e))
+            return str(e)
+
+        return Response({'url': checkout_session.url}, status=200)
 
 class AllOrdersView(APIView):
     permission_classes = [IsAuthenticated]
