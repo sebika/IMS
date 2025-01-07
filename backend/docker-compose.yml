@@ -13,9 +13,17 @@ services:
     environment:
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
-      - STRIPE_SECRET_KEY=key
+      - PAYMENT_API=http://payment:4242
     ports:
       - 8000:8000
+  payment:
+    image: jokeswar/ims-payment:latest
+    depends_on:
+      - backend
+    environment:
+      - STRIPE_SECRET_KEY=key
+    ports:
+      - 4242:4242
   postgres:
     image: postgres:16.1
     environment:

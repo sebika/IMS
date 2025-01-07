@@ -5,10 +5,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+import os
+import requests
 
 from .models import CartProduct, Component, Cpu, Gpu, Order, OrderProduct
 from .serializers import UserSerializer
-
 
 CustomUser = get_user_model()
 
@@ -110,11 +111,17 @@ class AddProductView(APIView):
     def post(self, request):
         category, data = request.data['category'], request.data['data']
 
+        response = requests.post(f'{os.getenv("PAYMENT_API")}/add_item', json={
+            'name': data['name'],
+            'price': data['price']
+        })
+
         component = Component(
             name=data['name'],
             brand=data['brand'],
             series=data['series'],
             price=data['price'],
+            price_id=response.json()['price_id'],
             category=category,
         )
         component.save()
@@ -186,12 +193,9 @@ class DeleteFromCartView(APIView):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-import stripe
-import os
 # This test secret API key is a placeholder. Don't include personal details in requests with this key.
 # To see your test secret API key embedded in code samples, sign in to your Stripe account.
 # You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
-stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 
 
 class CheckoutView(APIView):
@@ -225,20 +229,9 @@ class CheckoutView(APIView):
 
             cp.delete()
 
-        YOUR_DOMAIN = 'http://localhost:5173'
+        response = requests.post(f'{os.getenv("PAYMENT_API")}/create-checkout-session', json={ 'line_items': line_items })
 
-        try:
-            checkout_session = stripe.checkout.Session.create(
-                line_items=line_items,
-                mode='payment',
-                success_url=YOUR_DOMAIN + '?success=true',
-                cancel_url=YOUR_DOMAIN + '?canceled=true',
-            )
-        except Exception as e:
-            print(str(e))
-            return str(e)
-
-        return Response({'url': checkout_session.url}, status=200)
+        return Response({'url': response.json()['url']}, status=200)
 
 class AllOrdersView(APIView):
     permission_classes = [IsAuthenticated]

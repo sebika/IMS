@@ -1,0 +1,2 @@
+flask
+stripe==11.4.1
